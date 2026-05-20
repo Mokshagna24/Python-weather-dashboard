@@ -15,20 +15,22 @@ WEATHER_URL   = "https://api.open-meteo.com/v1/forecast"
 AIR_URL       = "https://air-quality-api.open-meteo.com/v1/air-quality"
 TIMEOUT       = aiohttp.ClientTimeout(total=8)
 
-async def fetch_weather(session, city):
+async def fetch_weather(session, city, retries=2):
     params = {
         "latitude":  city["lat"],
         "longitude": city["lon"],
-        "current":   "temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code",
+        "current":   "temperature_2m,relative_humidity_2m,wind_speed_10m",
     }
-    try:
-        async with session.get(WEATHER_URL, params=params, timeout=TIMEOUT) as r:
-            r.raise_for_status()
-            data = await r.json()
-            return data["current"]
-    except Exception as e:
-        return {"error": str(e)}
-
+    for attempt in range(retries):
+        try:
+            async with session.get(WEATHER_URL, params=params, timeout=TIMEOUT) as r:
+                r.raise_for_status()
+                return (await r.json())["current"]
+        except Exception as e:
+            if attempt < retries - 1:
+                await asyncio.sleep(1)   # wait 1s then retry
+            else:
+                return {"error": str(e)}
 
 async def fetch_air_quality(session, city):
     params = {

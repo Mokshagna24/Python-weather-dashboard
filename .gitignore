@@ -1,0 +1,16 @@
+# Virtual environment — never commit this
+env/
+.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/

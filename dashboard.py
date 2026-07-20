@@ -2,6 +2,9 @@ import asyncio
 import aiohttp
 import time
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 CITIES = [
     {"name": "Hyderabad", "lat": 17.38, "lon": 78.47},
@@ -11,9 +14,10 @@ CITIES = [
     {"name": "Bangalore", "lat": 12.97, "lon": 77.59},
 ]
 
-WEATHER_URL   = "https://api.open-meteo.com/v1/forecast"
-AIR_URL       = "https://air-quality-api.open-meteo.com/v1/air-quality"
+    
 TIMEOUT       = aiohttp.ClientTimeout(total=8)
+WEATHER_URL = os.getenv("WEATHER_URL")
+AIR_URL = os.getenv("AIR_URL")
 
 async def fetch_weather(session, city, retries=2):
     params = {

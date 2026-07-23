@@ -23,7 +23,7 @@ async HTTP requests — all in under 0.5 seconds.
 
 ```bash
 # Clone the repo
-git clone https://github.com/YourUsername/python-weather-dashboard.git
+git clone https://github.com/Mokshagna24/python-weather-dashboard.git
 cd python-weather-dashboard
 
 # Create and activate virtual environment
